@@ -1,16 +1,23 @@
 const app = require('express')();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const http = require('http');
+const socketio = require('socket.io');
 
-io.set('origins', '*:*');
+
+app.use(function(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "X-Requested-With");
+        res.header("Access-Control-Allow-Headers", "Content-Type");
+        res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+        next();
+});
+
+const server = http.createServer(app);
+const io = socketio.listen(server, {log:false, origins:'*:*'});
+
 io.on('connection', (socket) => {
   socket.on('message', (msg) => {
     socket.broadcast.emit('message', msg);
   });
 });
 
-
-
-http.listen(3000, () => {
-  console.log('listening on *:3000');
-});
+server.listen(5000);
