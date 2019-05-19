@@ -1,6 +1,11 @@
 const app = require('express')();
 const http = require('http');
 const socketio = require('socket.io');
+let port = process.env.PORT;
+
+if (port == null || port == "") {
+  port = 8000;
+}
 
 try {
 
@@ -22,7 +27,7 @@ socket.broadcast.emit('message', msg);
 });
 });
 
-server.listen(80);
+server.listen(port);
 
 console.log('server start on port')
 
