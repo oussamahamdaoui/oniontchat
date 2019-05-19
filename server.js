@@ -22,7 +22,7 @@ socket.broadcast.emit('message', msg);
 });
 });
 
-server.listen(5000);
+server.listen(80);
 
 console.log('server start on port')
 
